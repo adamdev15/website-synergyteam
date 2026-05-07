@@ -21,6 +21,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromoController;
+use App\Http\Controllers\TripayPaymentController;
 use App\Http\Controllers\TugasAkhirController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,10 @@ Route::get('/produk/{id}', [ProdukController::class, 'index'])->name('produk.sho
 Route::get('/produk-detail/{id}', [ProdukController::class, 'detailView'])->name('produk.detail.view');
 
 Route::middleware(['auth'])->group(function () {
+    // tripay
+    Route::post('/tripay/create', [TripayPaymentController::class, 'create'])->name('tripay.create');
+    Route::post('/tripay/callback', [TripayPaymentController::class, 'callback'])->name('tripay.callback');
+    
     // payment
     Route::post('/payment/create', [PaymentController::class, 'createSnapToken'])->name('payment.create');
     Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
@@ -55,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/payment/error', 'payment.error')->name('payment.error');
     // user
     Route::get('/riwayat-transaksi', [IndexController::class, 'riwayatTransaksi'])->name('riwayat-transaksi');
-    Route::get('/akun-saya', [IndexController::class, 'akunSaya'])->name('akun-saya');
+    Route::get('/profil-saya', [IndexController::class, 'akunSaya'])->name('akun-saya');
 });
 
 
@@ -83,7 +88,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/orders/update-status', [TransaksiController::class, 'updateStatus']);
     Route::get('/order/{order_code}/invoice', [TransaksiController::class, 'invoice'])->name('order.invoice');
     Route::get('/admin/data-transaksi/export', [TransaksiController::class, 'export'])->name('admin.transaksi.export');
-
 });
 
 

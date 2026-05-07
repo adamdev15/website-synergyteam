@@ -51,13 +51,13 @@
 
                     <div class="d-flex gap-2">
                         @auth
-                            <a href="#" class="btn btn-primary flex-fill py-3" id="btnBuyNow" data-product-id="{{ $product->id }}">
-                                <i class="bi bi-lightning me-2"></i>Beli Sekarang
-                            </a>
+                        <a href="#" class="btn btn-primary flex-fill py-3" id="btnBuyNow" data-product-id="{{ $product->id }}">
+                            <i class="bi bi-lightning me-2"></i>Beli Sekarang
+                        </a>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-primary flex-fill py-3">
-                                <i class="bi bi-lightning me-2"></i>Beli Sekarang
-                            </a>
+                        <a href="{{ route('login') }}" class="btn btn-primary flex-fill py-3">
+                            <i class="bi bi-lightning me-2"></i>Beli Sekarang
+                        </a>
                         @endauth
 
                         <a href="https://wa.me/6285713296692?text={{ urlencode('Halo admin, saya tertarik dengan '.$product->name) }}"
@@ -208,41 +208,37 @@
     }
 </style>
 
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+
 <script>
-document.getElementById('btnBuyNow').addEventListener('click', async function(e) {
-    e.preventDefault();
+    document.getElementById('btnBuyNow').addEventListener('click', async function(e) {
+        e.preventDefault();
+        const productId = this.dataset.productId;
 
-    const productId = e.target.getAttribute('data-product-id');
+        const method = "QRIS"; // default Tripay method (nanti bisa dropdown)
 
-    const response = await fetch('{{ route("payment.create") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ product_id: productId })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-        snap.pay(data.snap_token, {
-            onSuccess: function(result) {
-                alert('Pembayaran berhasil!');
-                location.reload();
+        const response = await fetch('{{ route("tripay.create") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            onPending: function(result) {
-                alert('Menunggu pembayaran...');
-            },
-            onError: function(result) {
-                alert('Terjadi kesalahan pembayaran!');
-            }
+            body: JSON.stringify({
+                product_id: productId,
+                method
+            })
         });
-    } else {
-        alert('Gagal membuat token pembayaran.');
-    }
-});
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = data.payment_url;
+        } else {
+            console.log("TRIPAY ERROR:", data);
+            alert('Gagal membuat pembayaran Tripay!');
+        }
+
+    });
 </script>
+
 
 @endsection
