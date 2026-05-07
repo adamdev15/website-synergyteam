@@ -105,8 +105,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 🔹 Load Data
     function loadSubcategories() {
+        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Memuat data...</td></tr>';
         axios.get("{{ route('subkategori.index') }}").then(res => {
             tableBody.innerHTML = "";
+            if (res.data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>';
+                return;
+            }
             res.data.forEach((item, index) => {
                 const thumb = item.thumbnail ? `<img src="/storage/${item.thumbnail}" class="img-thumbnail" style="max-height:50px;">` : `<span class="text-muted">No Image</span>`;
                 tableBody.innerHTML += `
@@ -118,12 +123,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${item.description ?? '-'}</td>
                         <td><span class="badge bg-${item.status === 'public' ? 'success' : 'secondary'}">${item.status}</span></td>
                         <td>
-                            <button class="btn btn-sm btn-warning me-1" onclick="editSubcategory(${item.id})">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteSubcategory(${item.id})">Hapus</button>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editSubcategory(${item.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSubcategory(${item.id})">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
                         </td>
                     </tr>
                 `;
             });
+        }).catch(err => {
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal memuat data.</td></tr>';
         });
     }
 
@@ -143,6 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 🔹 Submit Form
     form.addEventListener('submit', e => {
         e.preventDefault();
+        const btnSave = document.getElementById('btnSave');
+        btnSave.disabled = true;
+        btnSave.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+
         const formData = new FormData(form);
         const id = document.getElementById('subId').value;
 
@@ -150,24 +165,43 @@ document.addEventListener('DOMContentLoaded', function() {
         let method = 'post';
         if (editMode) {
             url = `/subkategori/${id}`;
-            method = 'post';
             formData.append('_method', 'PUT');
         }
 
         axios({
-            method: method,
+            method: 'post',
             url: url,
             data: formData,
             headers: { 'Content-Type': 'multipart/form-data' }
         })
         .then(res => {
-            Swal.fire('Berhasil!', res.data.message, 'success');
+            Swal.fire({
+                title: 'Berhasil!',
+                text: res.data.message,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
             modal.hide();
             loadSubcategories();
         })
         .catch(err => {
-            Swal.fire('Error!', 'Terjadi kesalahan saat menyimpan.', 'error');
+            let errorMsg = 'Terjadi kesalahan saat menyimpan.';
+            if (err.response && err.response.data && err.response.data.errors) {
+                errorMsg = Object.values(err.response.data.errors).flat().join('<br>');
+            } else if (err.response && err.response.data && err.response.data.message) {
+                errorMsg = err.response.data.message;
+            }
+            Swal.fire({
+                title: 'Gagal!',
+                html: errorMsg,
+                icon: 'error'
+            });
             console.error(err);
+        })
+        .finally(() => {
+            btnSave.disabled = false;
+            btnSave.innerHTML = 'Simpan';
         });
     });
 
@@ -191,24 +225,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('modalFormLabel').textContent = 'Edit Subkategori';
             modal.show();
+        }).catch(err => {
+            Swal.fire('Error', 'Gagal mengambil data subkategori.', 'error');
         });
     }
 
     // 🔹 Hapus
     window.deleteSubcategory = function(id) {
         Swal.fire({
-            title: 'Yakin ingin menghapus?',
-            text: 'Data yang dihapus tidak dapat dikembalikan!',
+            title: 'Apakah Anda yakin?',
+            text: 'Data subkategori ini akan dihapus secara permanen!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Hapus!'
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.delete(`/subkategori/${id}`).then(res => {
-                    Swal.fire('Terhapus!', res.data.message, 'success');
+                    Swal.fire({
+                        title: 'Terhapus!',
+                        text: res.data.message,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                     loadSubcategories();
+                }).catch(err => {
+                    Swal.fire('Gagal!', 'Tidak dapat menghapus data.', 'error');
                 });
             }
         });

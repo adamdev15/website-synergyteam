@@ -213,30 +213,85 @@
     document.getElementById('btnBuyNow').addEventListener('click', async function(e) {
         e.preventDefault();
         const productId = this.dataset.productId;
+        const btn = this;
 
-        const method = "QRIS"; // default Tripay method (nanti bisa dropdown)
-
-        const response = await fetch('{{ route("tripay.create") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        const { value: method } = await Swal.fire({
+            title: 'Pilih Metode Pembayaran',
+            input: 'select',
+            inputOptions: {
+                'QRIS': 'QRIS (Otomatis)',
+                'BCAVA': 'BCA Virtual Account',
+                'BNIVA': 'BNI Virtual Account',
+                'BRIVA': 'BRI Virtual Account',
+                'MANDIRIVA': 'Mandiri Virtual Account',
             },
-            body: JSON.stringify({
-                product_id: productId,
-                method
-            })
+            inputPlaceholder: 'Pilih metode...',
+            showCancelButton: true,
+            confirmButtonText: 'Lanjutkan',
+            cancelButtonText: 'Batal',
+            inputValidator: (value) => {
+                return new Promise((resolve) => {
+                    if (value) {
+                        resolve();
+                    } else {
+                        resolve('Anda harus memilih metode pembayaran!');
+                    }
+                });
+            }
         });
 
-        const data = await response.json();
+        if (!method) return;
 
-        if (data.success) {
-            window.location.href = data.payment_url;
-        } else {
-            console.log("TRIPAY ERROR:", data);
-            alert('Gagal membuat pembayaran Tripay!');
+        Swal.fire({
+            title: 'Memproses...',
+            text: 'Sedang membuat pesanan Anda',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            const response = await fetch('{{ route("tripay.create") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    method
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: 'Pesanan dibuat. Anda akan diarahkan ke halaman pembayaran.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = data.payment_url;
+                });
+            } else {
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: data.message || 'Gagal membuat pembayaran Tripay.',
+                    icon: 'error'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan sistem. Silakan coba lagi nanti.',
+                icon: 'error'
+            });
+            console.error("TRIPAY ERROR:", error);
         }
-
     });
 </script>
 

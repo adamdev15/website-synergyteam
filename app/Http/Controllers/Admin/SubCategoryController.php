@@ -28,7 +28,13 @@ class SubCategoryController extends Controller
             'label'       => 'nullable|string',
             'description' => 'nullable|string',
             'status'      => 'required|in:public,draft',
-            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'name.required' => 'Nama subkategori wajib diisi.',
+            'status.required' => 'Status wajib dipilih.',
+            'thumbnail.image' => 'File harus berupa gambar.',
+            'thumbnail.mimes' => 'Format gambar harus jpg, jpeg, png, atau webp.',
+            'thumbnail.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -65,7 +71,13 @@ class SubCategoryController extends Controller
             'label'       => 'nullable|string',
             'description' => 'nullable|string',
             'status'      => 'required|in:public,draft',
-            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'name.required' => 'Nama subkategori wajib diisi.',
+            'status.required' => 'Status wajib dipilih.',
+            'thumbnail.image' => 'File harus berupa gambar.',
+            'thumbnail.mimes' => 'Format gambar harus jpg, jpeg, png, atau webp.',
+            'thumbnail.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         if ($request->hasFile('thumbnail')) {

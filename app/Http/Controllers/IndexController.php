@@ -34,7 +34,7 @@ class IndexController extends Controller
                 'image' => 'assets/img/icon/api.png',
                 'title' => 'API Integration App',
                 'description' => 'Integrasi aplikasi dengan API untuk meningkatkan efisiensi sistem.',
-                'path' => '/api-integration-app',
+                'path' => '/api-integration',
             ],
             [
                 'image' => 'assets/img/icon/hostingdomain.png',
@@ -46,13 +46,13 @@ class IndexController extends Controller
                 'image' => 'assets/img/icon/website.jpg',
                 'title' => 'Website & Sistem Development',
                 'description' => 'Sistem berbasis web sesuai kebutuhan bisnis Anda.',
-                'path' => '/website-sistem-development',
+                'path' => '/pembuatan-website',
             ],
             [
                 'image' => 'assets/img/icon/ta.png',
                 'title' => 'Layanan Sistem Tugas Akhir',
                 'description' => 'Platform pendukung pengerjaan tugas akhir mahasiswa.',
-                'path' => '/layanan-tugas-akhir',
+                'path' => '/tugas-akhir',
             ],
         ];
 
@@ -80,7 +80,7 @@ class IndexController extends Controller
                 'image' => 'assets/img/icon/api.png',
                 'title' => 'API Integration App',
                 'description' => 'Integrasi aplikasi dengan API untuk meningkatkan efisiensi sistem.',
-                'path' => '/api-integration-app',
+                'path' => '/api-integration',
             ],
             [
                 'image' => 'assets/img/icon/hostingdomain.png',
@@ -92,13 +92,13 @@ class IndexController extends Controller
                 'image' => 'assets/img/icon/website.jpg',
                 'title' => 'Website & Sistem Development',
                 'description' => 'Sistem berbasis web sesuai kebutuhan bisnis Anda.',
-                'path' => '/website-sistem-development',
+                'path' => '/pembuatan-website',
             ],
             [
                 'image' => 'assets/img/icon/ta.png',
                 'title' => 'Layanan Sistem Tugas Akhir',
                 'description' => 'Platform pendukung pengerjaan tugas akhir mahasiswa.',
-                'path' => '/layanan-tugas-akhir',
+                'path' => '/tugas-akhir',
             ],
         ];
 

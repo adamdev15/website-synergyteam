@@ -153,7 +153,7 @@
                                 <a class="dropdown-item d-flex align-items-center justify-content-between toggle-submenu" href="javascript:void(0)">
                                     <div class="d-flex align-items-center gap-2">
                                         @if($sub->thumbnail)
-                                        <img src="{{ asset('storage/' . $sub->thumbnail) }}" width="25" height="25" class="rounded">
+                                        <img src="{{ asset('storage/' . $sub->thumbnail) }}" width="25" height="25" class="rounded" onerror="this.src='{{ asset('assets/img/icon/website.jpg') }}'">
                                         @endif
                                         {{ $sub->name }}
                                     </div>
@@ -290,9 +290,9 @@
                     <ul class="list-unstyled text-muted">
                         <li><a href="{{ url('/jasa-coding') }}" class="item text-muted text-decoration-none">Jasa Coding Anda</a></li>
                         <li><a href="{{ url('/pembuatan-website') }}" class="item text-muted text-decoration-none">Pembuatan Website</a></li>
-                        <li><a href="{{ url('/api-integration-app') }}" class="item text-muted text-decoration-none">API Integration App</a></li>
+                        <li><a href="{{ url('/api-integration') }}" class="item text-muted text-decoration-none">API Integration App</a></li>
                         <li><a href="{{ url('/hosting-domain') }}" class="item text-muted text-decoration-none">Hosting & Domain</a></li>
-                        <li><a href="{{ url('/layanan-tugas-akhir') }}" class="item text-muted text-decoration-none">Layanan Sistem Tugas Akhir</a></li>
+                        <li><a href="{{ url('/tugas-akhir') }}" class="item text-muted text-decoration-none">Layanan Sistem Tugas Akhir</a></li>
                     </ul>
                 </div>
 
@@ -373,6 +373,7 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
 </body>
 

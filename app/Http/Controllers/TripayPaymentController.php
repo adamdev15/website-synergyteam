@@ -72,6 +72,13 @@ class TripayPaymentController extends Controller
             ),
         ];
 
+        if (!config('tripay.api_key') || !config('tripay.private_key') || !config('tripay.merchant_code')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konfigurasi Tripay belum lengkap. Silakan hubungi administrator.'
+            ], 500);
+        }
+
         $response = Http::withToken(config('tripay.api_key'))
             ->post($this->endpoint('/transaction/create'), $payload);
 
@@ -80,7 +87,7 @@ class TripayPaymentController extends Controller
         if (!$result || !isset($result['success']) || $result['success'] !== true) {
             return response()->json([
                 'success' => false,
-                'message' => $result['message'] ?? 'Gagal membuat transaksi Tripay',
+                'message' => $result['message'] ?? 'Gagal membuat transaksi ke Tripay.',
                 'debug'   => $result
             ], 500);
         }
