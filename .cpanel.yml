@@ -1,3 +1,4 @@
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/astj8614/public_html/synergyteam.id
@@ -5,9 +6,8 @@ deployment:
     - /bin/cp -R bootstrap $DEPLOYPATH
     - /bin/cp -R config $DEPLOYPATH
     - /bin/cp -R database $DEPLOYPATH
-    - /bin/cp -R public/* $DEPLOYPATH/public
+    - /bin/cp -R public/* $DEPLOYPATH/public/
     - /bin/cp -R resources $DEPLOYPATH
     - /bin/cp -R routes $DEPLOYPATH
-    - /bin/cp -R storage $DEPLOYPATH
     - /bin/cp artisan $DEPLOYPATH
     - /bin/cp composer.json $DEPLOYPATH
