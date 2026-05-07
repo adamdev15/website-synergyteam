@@ -134,36 +134,68 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    let dataTable = null;
+
     // Load Subkategori
     function loadSubcategories() {
         axios.get("/subkategori").then(res => {
             subCategorySelect.innerHTML = res.data.map(sub =>
                 `<option value="${sub.id}">${sub.name}</option>`
             ).join("");
-        });
+        }).catch(err => console.error("Gagal memuat kategori:", err));
     }
 
     // Load Produk
     function loadProducts() {
+        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Memuat data...</td></tr>';
+        
+        if (dataTable) {
+            dataTable.destroy();
+        }
+
         axios.get("/produk").then(res => {
             tableBody.innerHTML = "";
+            if (res.data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada produk tersedia.</td></tr>';
+                return;
+            }
+
             res.data.forEach((p, i) => {
                 tableBody.innerHTML += `
                     <tr>
-                        <td>${p.name}</td>
-                        <td>${p.sub_category?.name ?? '-'}</td>
-                        <td>Rp ${p.price.toLocaleString()}</td>
-                        <td><span class="badge bg-${p.status === 'available' ? 'success' : 'secondary'}">${p.status}</span></td>
-                        <td>${p.thumbnail ? `<img src="/storage/${p.thumbnail}" width="60" class="rounded">` : '-'}</td>
-                        <td>${p.image ? `<img src="/storage/${p.image}" width="60" class="rounded">` : '-'}</td>
+                        <td class="fw-semibold">${p.name}</td>
+                        <td>${p.sub_category?.name ?? '<span class="text-muted">-</span>'}</td>
+                        <td class="text-primary fw-bold">Rp ${p.price.toLocaleString('id-ID')}</td>
+                        <td><span class="badge bg-${p.status === 'available' ? 'success' : 'secondary'} text-capitalize">${p.status.replace('_', ' ')}</span></td>
+                        <td>${p.thumbnail ? `<img src="/storage/${p.thumbnail}" width="50" height="50" class="rounded shadow-sm" style="object-fit:cover;">` : '<span class="text-muted">-</span>'}</td>
+                        <td>${p.image ? `<img src="/storage/${p.image}" width="50" height="50" class="rounded shadow-sm" style="object-fit:cover;">` : '<span class="text-muted">-</span>'}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm me-1" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-warning btn-sm" onclick="editProduct(${p.id})" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
             });
-            new simpleDatatables.DataTable("#datatablesSimple");
+            
+            dataTable = new simpleDatatables.DataTable("#datatablesSimple", {
+                searchable: true,
+                fixedHeight: false,
+                labels: {
+                    placeholder: "Cari produk...",
+                    perPage: "{select} data per halaman",
+                    noRows: "Tidak ada data produk",
+                    info: "Menampilkan {start} sampai {end} dari {rows} data",
+                }
+            });
+        }).catch(err => {
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal memuat data produk.</td></tr>';
+            console.error(err);
         });
     }
 
@@ -183,26 +215,44 @@ document.addEventListener("DOMContentLoaded", function () {
     // Simpan Produk
     form.addEventListener("submit", e => {
         e.preventDefault();
+        const btnSave = document.getElementById('btnSave');
+        btnSave.disabled = true;
+        btnSave.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
 
         const formData = new FormData(form);
+        let url = editMode ? `/produk/${editId}?_method=PUT` : "/produk";
 
-        if (!editMode) {
-            axios.post("/produk", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-                .then(() => {
-                    modal.hide();
-                    Swal.fire("Berhasil!", "Produk berhasil ditambahkan.", "success");
-                    loadProducts();
-                })
-                .catch(() => Swal.fire("Gagal!", "Tidak dapat menambah produk.", "error"));
-        } else {
-            axios.post(`/produk/${editId}?_method=PUT`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-                .then(() => {
-                    modal.hide();
-                    Swal.fire("Berhasil!", "Produk berhasil diperbarui.", "success");
-                    loadProducts();
-                })
-                .catch(() => Swal.fire("Gagal!", "Tidak dapat memperbarui produk.", "error"));
-        }
+        axios.post(url, formData, { 
+            headers: { 'Content-Type': 'multipart/form-data' } 
+        })
+        .then(res => {
+            modal.hide();
+            Swal.fire({
+                title: "Berhasil!",
+                text: res.data.message,
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+            });
+            loadProducts();
+        })
+        .catch(err => {
+            let errorMsg = 'Terjadi kesalahan saat menyimpan produk.';
+            if (err.response && err.response.data && err.response.data.errors) {
+                errorMsg = Object.values(err.response.data.errors).flat().join('<br>');
+            } else if (err.response && err.response.data && err.response.data.message) {
+                errorMsg = err.response.data.message;
+            }
+            Swal.fire({
+                title: "Gagal!",
+                html: errorMsg,
+                icon: "error"
+            });
+        })
+        .finally(() => {
+            btnSave.disabled = false;
+            btnSave.innerHTML = "Simpan";
+        });
     });
 
     // Edit Produk
@@ -222,34 +272,49 @@ document.addEventListener("DOMContentLoaded", function () {
             if (p.thumbnail) {
                 previewThumb.src = "/storage/" + p.thumbnail;
                 previewThumb.classList.remove("d-none");
+            } else {
+                previewThumb.classList.add("d-none");
             }
             if (p.image) {
                 previewImg.src = "/storage/" + p.image;
                 previewImg.classList.remove("d-none");
+            } else {
+                previewImg.classList.add("d-none");
             }
 
             modal.show();
+        }).catch(err => {
+            Swal.fire("Error", "Gagal mengambil data produk.", "error");
         });
     };
 
     // Hapus Produk
     window.deleteProduct = (id) => {
         Swal.fire({
-            title: "Yakin ingin menghapus?",
-            text: "Data produk akan dihapus permanen!",
+            title: "Apakah Anda yakin?",
+            text: "Data produk ini akan dihapus secara permanen!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, hapus!"
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Batal"
         }).then(result => {
             if (result.isConfirmed) {
                 axios.delete(`/produk/${id}`)
-                    .then(() => {
-                        Swal.fire("Dihapus!", "Produk berhasil dihapus.", "success");
+                    .then(res => {
+                        Swal.fire({
+                            title: "Terhapus!",
+                            text: res.data.message,
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
                         loadProducts();
                     })
-                    .catch(() => Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error"));
+                    .catch(() => {
+                        Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error");
+                    });
             }
         });
     };

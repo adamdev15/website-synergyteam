@@ -24,8 +24,20 @@ class ProductController extends Controller
             'description'     => 'nullable|string',
             'status'          => 'required|string',
             'link_drive'      => 'nullable|string',
-            'thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'image'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'name.required' => 'Nama produk wajib diisi.',
+            'sub_category_id.required' => 'Kategori wajib dipilih.',
+            'price.required' => 'Harga wajib diisi.',
+            'price.numeric' => 'Harga harus berupa angka.',
+            'status.required' => 'Status wajib dipilih.',
+            'thumbnail.image' => 'File thumbnail harus berupa gambar.',
+            'thumbnail.mimes' => 'Format thumbnail harus jpg, jpeg, png, atau webp.',
+            'thumbnail.max' => 'Ukuran thumbnail maksimal 2MB.',
+            'image.image' => 'File gambar harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpg, jpeg, png, atau webp.',
+            'image.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         // Upload file jika ada
@@ -58,8 +70,20 @@ class ProductController extends Controller
             'description'     => 'nullable|string',
             'status'          => 'required|string',
             'link_drive'      => 'nullable|string',
-            'thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'image'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'name.required' => 'Nama produk wajib diisi.',
+            'sub_category_id.required' => 'Kategori wajib dipilih.',
+            'price.required' => 'Harga wajib diisi.',
+            'price.numeric' => 'Harga harus berupa angka.',
+            'status.required' => 'Status wajib dipilih.',
+            'thumbnail.image' => 'File thumbnail harus berupa gambar.',
+            'thumbnail.mimes' => 'Format thumbnail harus jpg, jpeg, png, atau webp.',
+            'thumbnail.max' => 'Ukuran thumbnail maksimal 2MB.',
+            'image.image' => 'File gambar harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpg, jpeg, png, atau webp.',
+            'image.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         $product = Product::findOrFail($id);

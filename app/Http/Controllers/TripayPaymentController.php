@@ -17,7 +17,7 @@ class TripayPaymentController extends Controller
             ? 'https://tripay.co.id/api'
             : 'https://tripay.co.id/api-sandbox';
 
-        return $base . $path;
+        return rtrim($base, '/') . '/' . ltrim($path, '/');
     }
 
     public function create(Request $request)
@@ -49,6 +49,17 @@ class TripayPaymentController extends Controller
             'subtotal' => $amount,
         ]);
 
+        $apiKey = config('tripay.api_key');
+        $privateKey = config('tripay.private_key');
+        $merchantCode = config('tripay.merchant_code');
+
+        if (!$apiKey || !$privateKey || !$merchantCode) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Konfigurasi Tripay belum lengkap. Silakan hubungi administrator.'
+            ], 500);
+        }
+
         $payload = [
             'method'         => $request->method,
             'merchant_ref'   => $order->order_code,
@@ -67,20 +78,15 @@ class TripayPaymentController extends Controller
             'expired_time' => now()->addHours(24)->timestamp,
             'signature'    => hash_hmac(
                 'sha256',
-                config('tripay.merchant_code') . $order->order_code . $amount,
-                config('tripay.private_key')
+                $merchantCode . $order->order_code . $amount,
+                $privateKey
             ),
         ];
 
-        if (!config('tripay.api_key') || !config('tripay.private_key') || !config('tripay.merchant_code')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Konfigurasi Tripay belum lengkap. Silakan hubungi administrator.'
-            ], 500);
-        }
-
-        $response = Http::withToken(config('tripay.api_key'))
-            ->post($this->endpoint('/transaction/create'), $payload);
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $apiKey,
+            'Accept'        => 'application/json',
+        ])->post($this->endpoint('/transaction/create'), $payload);
 
         $result = $response->json();
 
@@ -88,7 +94,8 @@ class TripayPaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $result['message'] ?? 'Gagal membuat transaksi ke Tripay.',
-                'debug'   => $result
+                'debug_message' => $result['message'] ?? 'No message from Tripay',
+                'debug_response' => $result
             ], 500);
         }
 
