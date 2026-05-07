@@ -99,6 +99,18 @@ class TripayPaymentController extends Controller
             ], 500);
         }
 
+        // 🔹 Kirim Notif WA ke Admin (New Order)
+        $this->sendWhatsapp(
+            env('WA_ADMIN_NUMBER'),
+            "🔔 *PESANAN BARU (PENDING)*\n\n" .
+            "Kode: *{$order->order_code}*\n" .
+            "Produk: *{$product->name}*\n" .
+            "Total: *Rp " . number_format($amount, 0, ',', '.') . "*\n" .
+            "Metode: *{$request->method}*\n" .
+            "Customer: *{$user->name} ({$user->email})*\n\n" .
+            "Status: Menunggu Pembayaran"
+        );
+
         return response()->json([
             'success' => true,
             'payment_url' => $result['data']['checkout_url'],
@@ -125,6 +137,17 @@ class TripayPaymentController extends Controller
                 'status' => 'completed',
                 'payment_status' => 'paid'
             ]);
+
+            // 🔹 Kirim Notif WA ke Admin (Payment Success)
+            $this->sendWhatsapp(
+                env('WA_ADMIN_NUMBER'),
+                "✅ *PEMBAYARAN BERHASIL*\n\n" .
+                "Kode: *{$order->order_code}*\n" .
+                "Total: *Rp " . number_format($order->final_amount, 0, ',', '.') . "*\n" .
+                "Metode: *{$request->payment_method}*\n" .
+                "Customer: *{$order->user->name}*\n\n" .
+                "Status: *LUNAS*"
+            );
         } else {
             $order->update([
                 'status' => strtolower($request->status),
@@ -133,5 +156,22 @@ class TripayPaymentController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    private function sendWhatsapp($target, $message)
+    {
+        $token = env('FONNTE_TOKEN');
+        if (!$token || !$target) return;
+
+        try {
+            Http::withHeaders([
+                'Authorization' => $token
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $target,
+                'message' => $message,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("WhatsApp Notification Error: " . $e->getMessage());
+        }
     }
 }
