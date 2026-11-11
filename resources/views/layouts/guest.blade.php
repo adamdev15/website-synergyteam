@@ -82,6 +82,7 @@
 
     <main>
         @yield('content')
+        {{ $slot ?? '' }}
     </main>
 
     <footer class="footer-section position-relative bg-white pt-5 border-top">
