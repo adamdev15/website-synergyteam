@@ -356,15 +356,15 @@
             <div class="col-lg-4 article-sidebar">
                 {{-- CTA PROMO CARD (SESUAI KONSEP SIDEBAR-ADS INKALUM NAMUN KHUSUS SYNERGYTEAM) --}}
                 <div class="sidebar-promo-card">
-                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-semibold mb-3">Solusi Digital</span>
                     <h5 class="mb-3">Wujudkan Website &amp; Sistem Aplikasi Impian Anda!</h5>
                     <p class="small mb-4" style="opacity: 0.95;">
                         Konsultasikan kebutuhan pembuatan website, sistem tugas akhir, atau integrasi API bersama tim Synergy Team.
                     </p>
                     <a href="https://wa.me/6285713296692?text={{ urlencode('Halo Synergy Team, saya tertarik berkonsultasi mengenai pembuatan website/aplikasi setelah membaca artikel: ' . $article->title) }}"
                        target="_blank"
-                       class="btn btn-light fw-bold text-primary w-100 rounded-pill py-2 shadow-sm">
-                        <i class="bi bi-whatsapp text-success me-1"></i> Konsultasi Gratis Sekarang
+                       class="btn btn-light fw-bold text-success w-100 rounded-pill py-2 shadow-sm"
+                       style="color: #25d366 !important;">
+                        <i class="bi bi-whatsapp me-1" style="color: #25d366;"></i> Konsultasi Gratis Sekarang
                     </a>
                 </div>
 

@@ -312,9 +312,9 @@
                 </div>
 
                 {{-- Produk --}}
-                <div class="col-md-2 col-6 mb-4">
+                <div class="col-md-5 col-6 mb-4">
                     <h5 class="fw-bold mb-4 text-synergy">Produk Kami</h5>
-                    <ul class="list-unstyled text-muted">
+                    <ul class="text-muted ps-3 mb-0">
                         @php
                         $allProducts = $subcategories->flatMap(fn($sub) => $sub->products);
                         @endphp
@@ -336,30 +336,6 @@
                         <li><span class="text-muted">Tidak ada produk</span></li>
                         @endforelse
                     </ul>
-                </div>
-
-                {{-- Newsletter Form --}}
-                <div class="col-md-3 mb-4">
-                    <h5 class="fw-bold mb-4 text-synergy">Berlangganan Newsletter</h5>
-                    <p class="text-muted small">Dapatkan update terbaru tentang promo, layanan, dan proyek kami.</p>
-
-                    @if(session('success'))
-                    <div class="alert alert-success py-2 small">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-
-                    @if($errors->any())
-                    <div class="alert alert-danger py-2 small">
-                        {{ $errors->first('email') }}
-                    </div>
-                    @endif
-
-                    <form action="{{ route('newsletter.store') }}" method="POST" class="d-flex mt-3">
-                        @csrf
-                        <input type="email" name="email" class="form-control me-2" placeholder="Masukkan email Anda" required>
-                        <button type="submit" class="btn btn-primary px-3">Kirim</button>
-                    </form>
                 </div>
             </div>
         </div>

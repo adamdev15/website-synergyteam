@@ -217,10 +217,7 @@
     {{-- LATEST NEWS / ARTIKEL TERBARU (Konsep Inkalum) --}}
     <section id="artikel-terbaru" class="py-5" style="background-color: #f8faff;">
         <div class="container text-center mb-5">
-            <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill fw-bold text-uppercase mb-2" style="background-color: rgba(12, 84, 183, 0.1); letter-spacing: 1px;">
-                <i class="bi bi-newspaper me-1"></i> Edukasi &amp; Berita Terkini
-            </span>
-            <h2 class="display-5 fw-bold mb-3" style="color: #0c54b7;">Artikel &amp; Wawasan Digital</h2>
+            <h2 class="display-5 fw-bold mb-3" style="color: #0c54b7;">Artikel dan Berita</h2>
             <div class="underline mx-auto mb-3" style="width: 80px; height: 3px; background: linear-gradient(90deg, #126ebb, #0c54b7);"></div>
             <p class="lead text-muted mx-auto" style="max-width: 680px;">
                 Dapatkan panduan pembuatan website, tips coding, integrasi sistem, dan wawasan teknologi terbaru dari tim Synergy Team.
@@ -238,8 +235,8 @@
                                  style="object-fit: cover; transition: transform 0.5s ease;"
                                  alt="{{ $article->title }}"
                                  loading="lazy">
-                            <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 text-white shadow-sm"
-                                  style="background: linear-gradient(135deg, #126ebb, #0c54b7); border-radius: 20px; font-size: 0.75rem;">
+                            <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 text-white"
+                                  style="background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; font-size: 0.75rem; font-weight: 500;">
                                 {{ $article->category }}
                             </span>
                         </div>
@@ -260,7 +257,7 @@
                                 {{ Str::limit($article->excerpt, 120) }}
                             </p>
                             <div class="pt-3 border-top mt-auto d-flex justify-content-between align-items-center">
-                                <span class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                                <span class="text-primary fw-semibold small d-inline-flex align-items-center">
                                     Baca Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
                                 </span>
                                 <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ number_format($article->views) }}</small>

@@ -23,14 +23,14 @@ class ArticleTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Artikel &amp; Wawasan Digital', false);
+        $response->assertSee('Artikel dan Berita');
     }
 
     public function test_articles_index_page_loads(): void
     {
         $response = $this->get('/artikel');
         $response->assertStatus(200);
-        $response->assertSee('Artikel &amp; Wawasan Digital', false);
+        $response->assertSee('Artikel dan Berita');
     }
 
     public function test_article_detail_page_loads_with_seo_tags(): void

@@ -76,7 +76,7 @@
             </ol>
         </nav>
 
-        <h1 class="display-5 fw-bold mb-3">Artikel &amp; Wawasan Digital</h1>
+        <h1 class="display-5 fw-bold mb-3">Artikel dan Berita</h1>
         <p class="lead mx-auto mb-4" style="max-width: 680px; opacity: 0.95;">
             Kumpulan panduan, tips pembuatan website, jasa coding, integrasi payment gateway, dan wawasan teknologi terbaru dari tim ahli Synergy Team.
         </p>
@@ -90,7 +90,7 @@
                     @endif
                     <div class="input-group input-group-lg shadow-sm" style="border-radius: 50px; overflow: hidden; background: white;">
                         <input type="text" name="q" class="form-control border-0 px-4" placeholder="Cari topik atau artikel..." value="{{ request('q') }}" style="box-shadow: none;">
-                        <button class="btn btn-warning px-4 text-white fw-semibold" type="submit">
+                        <button class="btn btn-light bg-white text-primary px-4 fw-semibold border-start" type="submit" style="color: #0c54b7 !important;">
                             <i class="bi bi-search me-1"></i> Cari
                         </button>
                     </div>
@@ -125,7 +125,7 @@
         <div>
             Menampilkan hasil untuk:
             @if(request('kategori'))
-                <span class="badge bg-primary me-2">{{ request('kategori') }}</span>
+                <span class="text-primary fw-bold me-2">{{ request('kategori') }}</span>
             @endif
             @if(request('q'))
                 <span class="text-muted">Kata kunci: "<strong>{{ request('q') }}</strong>"</span>
@@ -148,8 +148,8 @@
                          style="object-fit: cover; transition: transform 0.5s ease;"
                          alt="{{ $item->title }}"
                          loading="lazy">
-                    <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 text-white shadow-sm"
-                          style="background: linear-gradient(135deg, #126ebb, #0c54b7); border-radius: 20px; font-size: 0.75rem;">
+                    <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 text-white"
+                          style="background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; font-size: 0.75rem; font-weight: 500;">
                         {{ $item->category }}
                     </span>
                 </div>
@@ -170,7 +170,7 @@
                         {{ Str::limit($item->excerpt, 120) }}
                     </p>
                     <div class="pt-3 border-top mt-auto d-flex justify-content-between align-items-center">
-                        <span class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                        <span class="text-primary fw-semibold small d-inline-flex align-items-center">
                             Baca Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
                         </span>
                         <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ number_format($item->views) }}</small>
