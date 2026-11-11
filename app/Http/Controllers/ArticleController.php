@@ -88,3 +88,4 @@ class ArticleController extends Controller
         return view('artikel.show', compact('article', 'relatedArticles', 'categories', 'subcategories'));
     }
 }
+

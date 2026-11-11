@@ -217,3 +217,4 @@ class ArticleController extends Controller
                          ->with('success', 'Artikel berhasil dihapus!');
     }
 }
+

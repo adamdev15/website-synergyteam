@@ -116,3 +116,4 @@ class Article extends Model
         return max(1, (int) ceil($words / 200));
     }
 }
+
