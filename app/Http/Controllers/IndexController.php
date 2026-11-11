@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Subcategory;
@@ -16,6 +17,7 @@ class IndexController extends Controller
         $testimonials = Testimoni::latest()->take(6)->get();
         $subcategories = Subcategory::with('products')->get();
         $product = Product::all();
+        $latestArticles = Article::published()->latest('published_at')->take(3)->get();
 
         $services = [
             [
@@ -56,7 +58,7 @@ class IndexController extends Controller
             ],
         ];
 
-        return view('home', compact('services', 'testimonials','subcategories'));
+        return view('home', compact('services', 'testimonials', 'subcategories', 'latestArticles'));
     }
     public function tentangKami()
     {

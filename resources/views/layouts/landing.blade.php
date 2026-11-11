@@ -5,6 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Synergy Team')</title>
+    @hasSection('seo')
+        @yield('seo')
+    @else
+        <meta name="description" content="Synergy Team adalah mitra terpercaya dalam pengembangan solusi digital, pembuatan website profesional, jasa coding, integrasi API, dan hosting domain.">
+        <meta name="keywords" content="pembuatan website, jasa coding, integrasi api, software house, synergy team, web developer indonesia">
+        <meta property="og:title" content="Synergy Team - Solusi Terbaik untuk Website & Proyek Digital Anda">
+        <meta property="og:description" content="Kembangkan bisnis Anda bersama Synergy Team dengan layanan pembuatan website, jasa coding aplikasi, dan integrasi API terpercaya.">
+        <meta property="og:image" content="{{ asset('assets/img/logosynergyteam.png') }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <link rel="canonical" href="{{ url()->current() }}">
+    @endif
     <link rel="icon" href="{{ asset('assets/img/logosynergyteam.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -196,6 +209,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link text-dark" href="{{ url('/promo') }}">Promo</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark {{ request()->is('artikel*') ? 'fw-bold text-primary' : '' }}" href="{{ route('artikel.index') }}">Artikel</a></li>
 
                     {{-- Pembayaran --}}
                     <li class="nav-item dropdown">
@@ -293,6 +307,7 @@
                         <li><a href="{{ url('/api-integration') }}" class="item text-muted text-decoration-none">API Integration App</a></li>
                         <li><a href="{{ url('/hosting-domain') }}" class="item text-muted text-decoration-none">Hosting & Domain</a></li>
                         <li><a href="{{ url('/tugas-akhir') }}" class="item text-muted text-decoration-none">Layanan Sistem Tugas Akhir</a></li>
+                        <li><a href="{{ route('artikel.index') }}" class="item text-muted text-decoration-none">Artikel &amp; Edukasi</a></li>
                     </ul>
                 </div>
 
@@ -305,9 +320,16 @@
                         @endphp
 
                         @forelse($allProducts as $prod)
-                        <li>
-                            <a href="{{ url('/produk/' . $prod->id) }}" class="item text-muted text-decoration-none">
-                                {{ $prod->name }}
+                        @php
+                            // Ambil nama inti produk sebelum tanda '-' jika ada
+                            $coreName = str_contains($prod->name, '-') ? explode('-', $prod->name)[0] : $prod->name;
+                            // Bersihkan emoji / simbol khusus di awal atau akhir nama
+                            $coreName = preg_replace('/[\x{1F000}-\x{1FFFF}\x{2600}-\x{27BF}\x{FE00}-\x{FE0F}]/u', '', $coreName);
+                            $coreName = trim($coreName);
+                        @endphp
+                        <li class="mb-2">
+                            <a href="{{ url('/produk/' . $prod->id) }}" class="item text-muted text-decoration-none" title="{{ $prod->name }}">
+                                {{ $coreName }}
                             </a>
                         </li>
                         @empty

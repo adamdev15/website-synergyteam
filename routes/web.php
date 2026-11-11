@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApiIntegrationController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\HostingDomainController;
 use App\Http\Controllers\IndexController;
@@ -44,6 +46,8 @@ Route::post('/testimoni-store', [TestimoniController::class, 'store'])->name('te
 Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 Route::get('/produk/{id}', [ProdukController::class, 'index'])->name('produk.show.view');
 Route::get('/produk-detail/{id}', [ProdukController::class, 'detailView'])->name('produk.detail.view');
+Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('artikel.show');
 
 Route::middleware(['auth'])->group(function () {
     // tripay
@@ -83,6 +87,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('produk', ProductController::class)->except(['create', 'edit']);
     Route::resource('menu', MenuController::class)->except(['create', 'edit']);
     Route::resource('menus', MenuController::class);
+    Route::resource('/admin/artikel', AdminArticleController::class)->names('admin.artikel');
     Route::get('/admin/data-transaksi', [TransaksiController::class, 'index'])->name('admin.data.transaksi');
     Route::delete('/admin/orders/{id}', [TransaksiController::class, 'destroy']);
     Route::post('/admin/orders/update-status', [TransaksiController::class, 'updateStatus']);

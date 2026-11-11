@@ -2,6 +2,24 @@
 
 @section('title', 'Home - Synergy Team')
 
+@push('styles')
+<style>
+    .news-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .news-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 28px rgba(12, 84, 183, 0.12) !important;
+    }
+    .news-card:hover .news-img-wrapper img {
+        transform: scale(1.06);
+    }
+    .title-hover:hover {
+        color: #0c54b7 !important;
+    }
+</style>
+@endpush
+
 @section('content')
     {{-- HERO SECTION --}}
     <section class="hero-section position-relative overflow-hidden">
@@ -192,6 +210,75 @@
                             style="max-height:100%;max-width:100%;object-fit:contain;border-radius:1rem;">
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- LATEST NEWS / ARTIKEL TERBARU (Konsep Inkalum) --}}
+    <section id="artikel-terbaru" class="py-5" style="background-color: #f8faff;">
+        <div class="container text-center mb-5">
+            <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill fw-bold text-uppercase mb-2" style="background-color: rgba(12, 84, 183, 0.1); letter-spacing: 1px;">
+                <i class="bi bi-newspaper me-1"></i> Edukasi &amp; Berita Terkini
+            </span>
+            <h2 class="display-5 fw-bold mb-3" style="color: #0c54b7;">Artikel &amp; Wawasan Digital</h2>
+            <div class="underline mx-auto mb-3" style="width: 80px; height: 3px; background: linear-gradient(90deg, #126ebb, #0c54b7);"></div>
+            <p class="lead text-muted mx-auto" style="max-width: 680px;">
+                Dapatkan panduan pembuatan website, tips coding, integrasi sistem, dan wawasan teknologi terbaru dari tim Synergy Team.
+            </p>
+        </div>
+
+        <div class="container">
+            <div class="row g-4">
+                @forelse($latestArticles ?? [] as $article)
+                <div class="col-lg-4 col-md-6">
+                    <article class="news-card h-100 position-relative overflow-hidden rounded-4 shadow-sm bg-white d-flex flex-column" style="border: 1px solid rgba(0,0,0,0.06);">
+                        <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px;">
+                            <img src="{{ $article->thumbnail_url }}"
+                                 class="w-100 h-100 img-fluid"
+                                 style="object-fit: cover; transition: transform 0.5s ease;"
+                                 alt="{{ $article->title }}"
+                                 loading="lazy">
+                            <span class="badge position-absolute top-0 end-0 m-3 px-3 py-2 text-white shadow-sm"
+                                  style="background: linear-gradient(135deg, #126ebb, #0c54b7); border-radius: 20px; font-size: 0.75rem;">
+                                {{ $article->category }}
+                            </span>
+                        </div>
+                        <div class="news-content p-4 d-flex flex-column flex-grow-1">
+                            <div class="news-meta mb-2 d-flex align-items-center gap-2 text-muted small">
+                                <span class="text-primary fw-semibold">
+                                    <i class="bi bi-calendar-event me-1"></i>{{ $article->published_at ? $article->published_at->translatedFormat('d M Y') : $article->created_at->translatedFormat('d M Y') }}
+                                </span>
+                                <span>•</span>
+                                <span><i class="bi bi-clock me-1"></i>{{ $article->reading_time }} mnt baca</span>
+                            </div>
+                            <h3 class="h5 fw-bold mb-2">
+                                <a href="{{ route('artikel.show', $article->slug) }}" class="text-decoration-none text-dark stretched-link title-hover">
+                                    {{ $article->title }}
+                                </a>
+                            </h3>
+                            <p class="text-muted small mt-2 mb-4 flex-grow-1" style="line-height: 1.6;">
+                                {{ Str::limit($article->excerpt, 120) }}
+                            </p>
+                            <div class="pt-3 border-top mt-auto d-flex justify-content-between align-items-center">
+                                <span class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                                    Baca Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
+                                </span>
+                                <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ number_format($article->views) }}</small>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                @empty
+                <div class="col-12 text-center py-4 text-muted">
+                    <p>Belum ada artikel yang dipublikasikan.</p>
+                </div>
+                @endforelse
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{{ route('artikel.index') }}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm fw-semibold" style="background: linear-gradient(135deg, #126ebb, #0c54b7); border: none;">
+                    Lihat Semua Artikel <i class="bi bi-arrow-right ms-2"></i>
+                </a>
             </div>
         </div>
     </section>

@@ -22,6 +22,7 @@
             accent-color: #0d6efd;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body class="nav-fixed">
@@ -137,6 +138,12 @@
                             Kelola Menu Produk
                         </a>
 
+                        <!-- Kelola Artikel & SEO -->
+                        <a class="nav-link {{ request()->routeIs('admin.artikel.*') ? 'active' : '' }}" href="{{ route('admin.artikel.index') }}">
+                            <div class="nav-link-icon"><i data-feather="file-text"></i></div>
+                            Kelola Artikel &amp; SEO
+                        </a>
+
                         <!-- Data Siswa -->
                         <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseSiswa" aria-expanded="false" aria-controls="collapseSiswa">
                             <div class="nav-link-icon"><i data-feather="users"></i></div>
@@ -238,6 +245,7 @@
     <script src="{{ asset('js/litepicker.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('scripts')
 </body>
 
 </html>
