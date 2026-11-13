@@ -25,7 +25,7 @@
     <section class="hero-section position-relative overflow-hidden">
         <div class="container-fluid py-5">
             <div class="row align-items-center">
-                <div class="col-lg-7 col-md-12 px-1 px-lg-5">
+                <div class="col-lg-7 col-md-12 px-1 px-lg-5" data-aos="fade-right" data-aos-duration="900">
                     <div class="hero-content text-white">
                         <h1 class="display-4 fw-bold mb-4 hero-title">
                             Solusi Terbaik untuk Website Impian Anda
@@ -47,22 +47,22 @@
                 </div>
 
                 {{-- Right Illustration --}}
-                <div class="col-lg-5 col-md-12 d-flex justify-content-center align-items-center">
+                <div class="col-lg-5 col-md-12 d-flex justify-content-center align-items-center" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
                     <div class="hero-illustration position-relative">
                         <img src="{{ asset('assets/img/ilustrasi.png') }}" alt="Ilustrasi Synergy Team"
                              class="img-fluid rounded dashboard-mockup" style="border-radius: 10px;">
 
                         {{-- Stats Cards --}}
                         <div class="stats-card position-absolute bg-white rounded shadow p-3 d-none d-md-block"
-                             style="top:80px; left:-60px; width:180px;">
+                             style="top:80px; left:-60px; width:180px;" data-aos="zoom-in" data-aos-delay="400">
                             <div class="text-center">
-                                <div class="h4 text-primary fw-bold mb-1">50.000+</div>
+                                <div class="h4 text-primary fw-bold mb-1">50+</div>
                                 <div class="small text-muted">Pengguna Synergy Team</div>
                             </div>
                         </div>
 
                         <div class="stats-card position-absolute bg-white rounded shadow p-3 d-none d-md-block"
-                             style="bottom:50px; left:-40px; width:180px;">
+                             style="bottom:50px; left:-40px; width:180px;" data-aos="zoom-in" data-aos-delay="500">
                             <div class="text-center">
                                 <div class="h5 text-primary fw-bold mb-1">15 program</div>
                                 <div class="small text-muted">Telah diakses berbagai klien</div>
@@ -70,9 +70,9 @@
                         </div>
 
                         <div class="stats-card position-absolute bg-white rounded shadow p-3 d-none d-md-block"
-                             style="top:200px; right:-40px; width:160px;">
+                             style="top:200px; right:-40px; width:160px;" data-aos="zoom-in" data-aos-delay="600">
                             <div class="text-center">
-                                <div class="h5 text-primary fw-bold mb-1">10 Tahun</div>
+                                <div class="h5 text-primary fw-bold mb-1">5 Tahun</div>
                                 <div class="small text-muted">Melayani Klien seluruh Indonesia</div>
                             </div>
                         </div>
@@ -90,12 +90,12 @@
 
 
     {{-- WHY SECTION --}}
-    <section class="why-section bg-white">
+    <section class="why-section bg-white py-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-12 pe-lg-5 mb-4 mb-lg-0">
+                <div class="col-lg-6 col-md-12 pe-lg-5 mb-4 mb-lg-0" data-aos="fade-right" data-aos-duration="900">
                     <div class="why-content">
-                        <h2 class="display-6 fw-bold text-dark mb-4 text-center">
+                        <h2 class="display-6 fw-bold text-dark mb-4 text-center text-lg-start">
                             Mengapa Harus Memilih <span class="text-primary">Synergy Team</span> Sebagai Solusi Digital Anda?
                         </h2>
 
@@ -110,7 +110,7 @@
                             @endphp
 
                             @foreach($features as $f)
-                                <div class="col-6 col-sm-6">
+                                <div class="col-6 col-sm-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
                                     <div class="card h-100 border-0 shadow-sm p-3">
                                         <div class="icon-circle mb-3 d-flex align-items-center justify-content-center">
                                             <i class="bi {{ $f['icon'] }}"></i>
@@ -122,7 +122,7 @@
                             @endforeach
                         </div>
 
-                        <div class="cta-section mt-4 text-center">
+                        <div class="cta-section mt-4 text-center text-lg-start" data-aos="fade-up" data-aos-delay="450">
                             <a href="{{ url('/kontak-kami') }}" class="btn btn-success btn-md px-4 py-3 fw-semibold cta-button">
                                 📞 Hubungi Kami
                             </a>
@@ -131,7 +131,7 @@
                 </div>
 
                 {{-- Right Illustration --}}
-                <div class="col-lg-6 col-md-12 text-center">
+                <div class="col-lg-6 col-md-12 text-center" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
                     <img src="{{ asset('assets/img/ilustrasi-why.webp') }}" alt="Mengapa Synergy Team" class="img-fluid">
                 </div>
             </div>
@@ -141,7 +141,7 @@
 
     {{-- LAYANAN SECTION --}}
     <section id="layanan-kami" class="py-5" style="background-color: #f8f9ff;">
-        <div class="container text-center mb-5">
+        <div class="container text-center mb-5" data-aos="fade-up">
             <h2 class="display-5 fw-bold mb-4 text-primary">Layanan Kami</h2>
             <div class="underline mx-auto mb-4" style="width:80px; height:3px; background:linear-gradient(90deg,#126ebb,#0c54b7);"></div>
             <p class="lead text-muted">
@@ -152,7 +152,7 @@
         <div class="container">
             <div class="row">
                 @foreach($services as $service)
-                    <div class="col-lg-4 col-md-6 col-6 col-sm-6 mb-4">
+                    <div class="col-lg-4 col-md-6 col-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
                         <a href="{{ url($service['path']) }}" class="text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm service-card text-center p-4">
                                 <div class="service-icon mb-3 mx-auto d-flex align-items-center justify-content-center"
@@ -175,7 +175,7 @@
         <div class="container">
             <div class="row align-items-center">
                 {{-- Left Content --}}
-                <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-duration="900">
                     <h2 class="display-5 fw-bold mb-4" style="color:#126ebb;">Aplikasi Eco Market</h2>
                     <div class="underline mb-4"
                         style="width:80px;height:3px;background:linear-gradient(90deg,#126ebb,#0c54b7);"></div>
@@ -192,18 +192,18 @@
                             <li class="mb-2"><span class="text-success me-2">✓</span>Manajemen Bank Sampah</li>
                             <li class="mb-2"><span class="text-success me-2">✓</span>Marketplace UMKM</li>
                             <li class="mb-2"><span class="text-success me-2">✓</span>Fitur Tabungan Daur Ulang</li>
-                            <li class="mb-2"><span class="text-success me-2">✓</span>Berbasis PWA & Notifikasi Real-time</li>
+                            <li class="mb-2"><span class="text-success me-2">✓</span>Berbasis PWA &amp; Notifikasi Real-time</li>
                         </ul>
                     </div>
 
                     <a href="https://ecomarket.adamm.web.id/" target="_blank"
-                    class="btn btn-primary btn-lg">
-                        Demo Aplikasi
+                    class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm fw-semibold">
+                        Demo Aplikasi <i class="bi bi-box-arrow-up-right ms-2"></i>
                     </a>
                 </div>
 
                 {{-- Right Image --}}
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
                     <div class="lms-image-placeholder d-flex align-items-center justify-content-center rounded-3"
                         style="height:500px;animation:float 8s ease-in-out infinite;">
                         <img src="{{ asset('assets/img/portfolio/project-1.jpg') }}" alt="Eco Market"
@@ -216,7 +216,7 @@
 
     {{-- LATEST NEWS / ARTIKEL TERBARU (Konsep Inkalum) --}}
     <section id="artikel-terbaru" class="py-5" style="background-color: #f8faff;">
-        <div class="container text-center mb-5">
+        <div class="container text-center mb-5" data-aos="fade-up">
             <h2 class="display-5 fw-bold mb-3" style="color: #0c54b7;">Artikel dan Berita</h2>
             <div class="underline mx-auto mb-3" style="width: 80px; height: 3px; background: linear-gradient(90deg, #126ebb, #0c54b7);"></div>
             <p class="lead text-muted mx-auto" style="max-width: 680px;">
@@ -227,7 +227,7 @@
         <div class="container">
             <div class="row g-4">
                 @forelse($latestArticles ?? [] as $article)
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
                     <article class="news-card h-100 position-relative overflow-hidden rounded-4 shadow-sm bg-white d-flex flex-column" style="border: 1px solid rgba(0,0,0,0.06);">
                         <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px;">
                             <img src="{{ $article->thumbnail_url }}"
@@ -272,7 +272,7 @@
                 @endforelse
             </div>
 
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" data-aos="zoom-in" data-aos-delay="200">
                 <a href="{{ route('artikel.index') }}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm fw-semibold" style="background: linear-gradient(135deg, #126ebb, #0c54b7); border: none;">
                     Lihat Semua Artikel <i class="bi bi-arrow-right ms-2"></i>
                 </a>
@@ -283,13 +283,13 @@
     {{--  SECTION FAQ  --}}
     <section class="faq-section bg-white py-5">
         <div class="container">
-            <div class="text-center mb-5">
+            <div class="text-center mb-5" data-aos="fade-up">
                 <h6 class="fw-semibold text-primary">F.A.Q</h6>
                 <h4 class="fw-bold text-dark">Pertanyaan Seputar Layanan Synergyteam.id</h4>
             </div>
 
             <div class="row">
-                <div class="col-md-6 mb-4 mb-md-0">
+                <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="800">
                     <div class="accordion" id="faqLeft">
                         @php
                             $faqLeft = [
@@ -321,7 +321,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
                     <div class="accordion" id="faqRight">
                         @php
                             $faqRight = [
@@ -361,7 +361,7 @@
         style="background: linear-gradient(135deg, #126ebb 0%, #0c54b7 100%)">
         <div class="container position-relative">
             <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-duration="800">
                     <h2 class="fw-bold mb-4">Apa Kata <span style="color: #ffd700">Pelanggan</span>?</h2>
                     <div id="carouselTestimoni" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
@@ -385,7 +385,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 text-center">
+                <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
                     <img src="{{ asset('assets/img/testimoni.png') }}" alt="Ilustrasi Testimoni" class="img-fluid"
                         style="max-width: 70%; height: auto;">
                 </div>
@@ -395,6 +395,7 @@
 
     {{--  SECTION AKSI (CALL TO ACTION)  --}}
     <section class="container text-white position-relative overflow-hidden shadow-sm my-5"
+            data-aos="zoom-in" data-aos-duration="900"
             style="background:linear-gradient(135deg,#126ebb 0%,#0c54b7 100%);border-radius:20px;padding:60px 30px;">
         <div class="cta text-center position-relative">
             <h2 class=" fw-bold mb-4">Saatnya Ide Anda menjadi Solusi Profesional di Era Digital</h2>
@@ -403,7 +404,7 @@
                 Synergyteam.id siap membantu Anda membangun website, sistem, atau aplikasi sesuai kebutuhan Anda —
                 baik untuk bisnis, institusi, maupun pendidikan.
             </p>
-            <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <div class="d-flex justify-content-center gap-4 flex-wrap" data-aos="fade-up" data-aos-delay="200">
                 <a href="{{ url('/pembuatan-website') }}" class="button btn btn-light btn-lg px-5 py-3 fw-bold shadow" style="border-radius:50px;">
                     🚀 Bangun Website Sekarang
                 </a>

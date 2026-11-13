@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 py-5">
 
-    <div class="card shadow-sm p-4" style="width: 400px; border-radius: 16px; border: none;">
+    <div class="card shadow-sm p-4" style="width: 400px; border-radius: 16px; border: none;" data-aos="fade-up" data-aos-duration="600">
         <img src="{{ asset('assets/img/logosynergyteam.png') }}" alt="Logo Synergy Team" style="width: 60px;" class="mx-auto d-block mb-2">
         <h5 class="text-center mb-2 fw-semibold" style="color: #0c54b7;">Masuk ke Synergy Team</h5>
         <p class="text-center text-muted small mb-4">

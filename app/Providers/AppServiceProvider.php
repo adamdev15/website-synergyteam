@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('layouts.landing', function ($view) {
+        view()->composer(['layouts.landing', 'layouts.guest', 'layouts.footer'], function ($view) {
             $view->with('subcategories', Subcategory::with('products')->get());
         });
 

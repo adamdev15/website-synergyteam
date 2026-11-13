@@ -140,7 +140,7 @@
     {{-- ARTICLES GRID (Konsep Inkalum Latest News) --}}
     <div class="row g-4 mb-5">
         @forelse($articles as $item)
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->iteration % 3) * 100 }}">
             <article class="news-card h-100 position-relative overflow-hidden rounded-4 shadow-sm bg-white d-flex flex-column">
                 <div class="news-img-wrapper position-relative overflow-hidden" style="height: 220px;">
                     <img src="{{ $item->thumbnail_url }}"
